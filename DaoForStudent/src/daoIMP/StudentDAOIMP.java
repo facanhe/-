@@ -2,16 +2,18 @@ package daoIMP;
 import bean.Student;
 import dao.StudentDAO;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import connection.DataBaseConnection;
 
 public class StudentDAOIMP implements StudentDAO{
-	// Ìí¼Ó²Ù×÷
+	// ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
 	    public void insert(Student s){
 	      String sql = "INSERT INTO student (id, name) values (?,?)";
 	    PreparedStatement pstmt = null;
 	    DataBaseConnection conn = null;
-	    //Õë¶ÔÊý¾Ý¿âµÄ¾ßÌå²Ù×÷
+	    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	    try{
 	        conn = new DataBaseConnection();
 	        
@@ -31,7 +33,7 @@ public class StudentDAOIMP implements StudentDAO{
 	    String sql = "UPDATE student SET name =? Where id = ? ";
 	    PreparedStatement pstmt = null;
 	    DataBaseConnection conn = null;
-	    //Õë¶ÔÊý¾Ý¿âµÄ¾ßÌå²Ù×÷
+	    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	    try{
 	        conn = new DataBaseConnection();
 	        pstmt = conn.getConnection().prepareStatement(sql);
@@ -49,9 +51,48 @@ public class StudentDAOIMP implements StudentDAO{
 
 
 
-	//public void delete(String iD){}//×÷Òµ1
+	public void delete(long iD){
+		String sql="DELETE FROMã€€student whereã€€id = ? ";
+		 PreparedStatement pstmt = null;
+		    DataBaseConnection conn = null;
+		    try{
+		    conn=new DataBaseConnection();
+		    pstmt=conn.getConnection().prepareStatement(sql);
+		    pstmt.setLong(1,iD);
+		    pstmt.executeUpdate();
+		    pstmt.close();
+	        conn.close();
+		    }
+		     catch(Exception e){ }
+	}//ï¿½ï¿½Òµ1
 	    
-	//public List findAll(){}//×÷Òµ2
+	public List findAll(){
+		
+		 PreparedStatement pstmt = null;
+		    DataBaseConnection conn = null;
+		    List<Student> list=null;
+		    String sql="select*from student";
+		    
+		    try {
+		    conn=new DataBaseConnection();
+		    pstmt=conn.getConnection().prepareStatement(sql);
+		    rs=pstmt.executeQuery();
+		    list=new ArrayList<Student>();
+		    while(rs.next())
+			{
+				Student stu=new Student();
+				
+				stu.setID(rs.getLong("id"));
+				stu.setName(rs.getString("name"));
+				list.add(stu);
+			}
+		    rs.close();
+			pstmt.close();
+			conn.close();
+			}
+		    catch(Exception e){ }
+		    return list;
+	}//ï¿½ï¿½Òµ2
 
 
 
@@ -60,7 +101,7 @@ public class StudentDAOIMP implements StudentDAO{
 	String sql = "SELECT id, name FROM student Where id = ? ";
 	    PreparedStatement pstmt = null;
 	    DataBaseConnection conn = null;
-	    //Õë¶ÔÊý¾Ý¿âµÄ¾ßÌå²Ù×÷
+	    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	    try{
 	        conn = new DataBaseConnection();
 	        pstmt = conn.getConnection().prepareStatement(sql);
